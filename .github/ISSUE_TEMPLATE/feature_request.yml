@@ -1,33 +1,41 @@
-name: Feature Request
-description: Suggest a new feature for emoji_filter
-title: "[Feature]: "
+﻿name: Feature Request
+description: 建议新功能
+title: '[Feature]: '
 labels: [enhancement]
 body:
   - type: markdown
     attributes:
-      value: "## Thanks for the suggestion!"
+      value: '## 感谢你的建议！'
+
   - type: textarea
     id: description
     attributes:
-      label: Feature Description
-      description: What would you like the plugin to do?
+      label: 功能描述
+      description: 你希望插件增加什么功能？
     validations:
       required: true
+
   - type: textarea
     id: usecase
     attributes:
-      label: Use Case
-      description: Why is this useful for you?
+      label: 使用场景
+      description: 这个功能对你的群聊有什么帮助？
     validations:
       required: true
+
   - type: dropdown
-    id: scope
+    id: priority
     attributes:
-      label: Scope
+      label: 优先级感知
       options:
-        - "Per-message filtering (current)"
-        - "Optional whitelist channels"
-        - "Custom emoji allowlist"
-        - "Other (describe below)"
+        - '高：严重影响使用'
+        - '中：有更好，没有也能用'
+        - '低：锦上添花'
     validations:
       required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 实现建议
+      description: 如有实现思路可描述于此

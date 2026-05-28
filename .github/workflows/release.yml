@@ -4,19 +4,88 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '手动触发发布的 tag (如 v1.0.0)'
+        required: true
+        type: string
+      prerelease:
+        description: '标记为 pre-release'
+        type: boolean
+        default: false
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      plugin_name: ${{ steps.meta.outputs.plugin_name }}
+      plugin_version: ${{ steps.meta.outputs.plugin_version }}
+      is_prerelease: ${{ steps.meta.outputs.is_prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse metadata
+        id: meta
+        run: |
+          TAG="${{ github.ref_name }}"
+          if [[ "$TAG" == *"-"* ]]; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [[ "${{ inputs.prerelease }}" == "true" ]]; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "plugin_version=$TAG" >> "$GITHUB_OUTPUT"
+      - name: Validate plugin structure
+        run: |
+          for f in main.py metadata.yaml _conf_schema.json README.md; do
+            if [ ! -f "$f" ]; then echo "Missing: $f"; exit 1; fi
+          done
+      - name: Validate Python syntax
+        run: python -c "import ast; ast.parse(open('main.py').read())"
+      - name: Extract plugin name
+        id: name_extract
+        run: |
+          NAME=$(grep '^name:' metadata.yaml | sed 's/name: *//')
+          echo "plugin_name=$NAME" >> "$GITHUB_OUTPUT"
+
   release:
+    needs: validate
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
-
+      - name: Generate changelog
+        run: |
+          echo "## 变更内容" > CHANGELOG.md
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$PREV_TAG" ]; then
+            echo "**$PREV_TAG → ${{ github.ref_name }}**" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            git log $PREV_TAG..HEAD --pretty=format:"- %s" >> CHANGELOG.md
+          else
+            echo "首个正式版本发布。" >> CHANGELOG.md
+          fi
+      - name: Determine release category
+        id: category
+        run: |
+          FILE_COUNT=$(find . -name '*.py' -not -path './.git/*' | wc -l)
+          if [ "$FILE_COUNT" -le 3 ]; then
+            echo "category=小型插件" >> "$GITHUB_OUTPUT"
+          elif [ "$FILE_COUNT" -le 10 ]; then
+            echo "category=中型插件" >> "$GITHUB_OUTPUT"
+          else
+            echo "category=大型插件" >> "$GITHUB_OUTPUT"
+          fi
+          echo "file_count=$FILE_COUNT" >> "$GITHUB_OUTPUT"
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Release ${{ github.ref_name }}
+          name: "${{ needs.validate.outputs.plugin_name }} ${{ github.ref_name }}"
+          body_path: CHANGELOG.md
+          prerelease: ${{ needs.validate.outputs.is_prerelease == 'true' }}
           generate_release_notes: true
           files: |
             main.py
@@ -24,3 +93,4 @@ jobs:
             _conf_schema.json
             README.md
             LICENSE
+            requirements.txt

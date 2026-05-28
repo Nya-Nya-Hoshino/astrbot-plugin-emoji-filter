@@ -1,53 +1,75 @@
-name: Bug Report
-description: Report a problem with the emoji_filter plugin
-title: "[Bug]: "
+﻿name: Bug Report
+description: 报告插件问题
+title: '[Bug]: '
 labels: [bug]
 body:
   - type: markdown
     attributes:
-      value: "## Thanks for reporting a bug!"
-  - type: input
-    id: astrbot_version
-    attributes:
-      label: AstrBot Version
-      placeholder: "e.g. v4.25.0"
-    validations:
-      required: true
+      value: '## 感谢反馈 Bug！'
+
   - type: input
     id: plugin_version
     attributes:
-      label: emoji_filter Plugin Version
-      placeholder: "e.g. v1.0.0"
+      label: 插件版本
+      placeholder: e.g. v1.0.0
     validations:
       required: true
+
+  - type: input
+    id: astrbot_version
+    attributes:
+      label: AstrBot 版本
+      placeholder: e.g. v4.25.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 消息平台
+      options:
+        - QQ (NapCatQQ / aiocqhttp)
+        - QQ (Lagrange)
+        - Telegram
+        - 企业微信
+        - 飞书
+        - 钉钉
+        - Discord
+        - 其他平台
+    validations:
+      required: true
+
   - type: textarea
     id: description
     attributes:
-      label: Bug Description
-      description: What happened and what did you expect?
+      label: Bug 描述
+      description: 发生了什么？期望什么？
     validations:
       required: true
+
   - type: textarea
     id: steps
     attributes:
-      label: Steps to Reproduce
+      label: 复现步骤
       placeholder: |
-        1. Enable plugin
-        2. Send message with emoji
-        3. Bot still replies with emoji
+        1. 启用插件
+        2. 发送消息 '...'
+        3. 看到错误 '...'
     validations:
       required: true
+
   - type: textarea
     id: logs
     attributes:
-      label: Relevant Logs
-      description: Search AstrBot console for [emoji_filter] and paste here
+      label: 相关日志
+      description: 从 AstrBot 控制台复制相关日志
       render: shell
+
   - type: checkboxes
     id: checks
     attributes:
-      label: Pre-submission Checklist
+      label: 提交前确认
       options:
-        - label: I have updated to the latest version
-        - label: I have searched existing issues
-        - label: I have checked emoji_filter_enabled is 	rue in WebUI
+        - label: 已更新到最新版本
+        - label: 已搜索已有 issue
+        - label: 已在 WebUI 确认插件已启用
