@@ -1,0 +1,7 @@
+{
+    "emoji_filter_enabled": {
+        "description": "Enable emoji filter on bot replies",
+        "type": "bool",
+        "default": true
+    }
+}

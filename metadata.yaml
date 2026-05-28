@@ -1,4 +1,6 @@
 name: emoji_filter
-desc: Filter emoji characters from bot replies before sending. Uses Unicode regex to strip emoji by code point.
-author: AstrBot
-version: 0.0.1
+desc: Strip emoji characters from bot replies by Unicode code point matching.
+help: Automatically removes all emoji from bot-generated messages before sending. Use /emoji_toggle to enable/disable (coming soon).
+version: v1.0
+author: Nya-Nya-Hoshino
+repo: https://github.com/liu2006jw-source/astrbot-plugin-emoji-filter
