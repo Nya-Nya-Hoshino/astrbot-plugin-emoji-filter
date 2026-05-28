@@ -1,0 +1,4 @@
+name: emoji_filter
+desc: Filter emoji characters from bot replies before sending. Uses Unicode regex to strip emoji by code point.
+author: AstrBot
+version: 0.0.1
