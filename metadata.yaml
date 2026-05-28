@@ -3,4 +3,4 @@ desc: Strip emoji characters from bot replies by Unicode code point matching.
 help: Automatically removes all emoji from bot-generated messages before sending. Priority=100 ensures it runs before downstream plugins like custome_segment_reply.
 version: v1.0.0
 author: Nya-Nya-Hoshino
-repo: https://github.com/liu2006jw-source/astrbot-plugin-emoji-filter
+repo: https://github.com/Nya-Nya-Hoshino/astrbot-plugin-emoji-filter
