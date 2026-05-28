@@ -54,26 +54,34 @@ class EmojiFilter(Star):
         super().__init__(context)
         self.config = config
         self.emoji_filter_enabled = self.config.get("emoji_filter_enabled", True)
+        logger.info(f"[emoji_filter] Plugin loaded. enabled={self.emoji_filter_enabled}")
 
     @filter.on_decorating_result()
     async def on_decorating_result(self, event: AstrMessageEvent):
+        logger.info("[emoji_filter] on_decorating_result triggered")
+
         if not self.emoji_filter_enabled:
+            logger.info("[emoji_filter] Disabled, skipping.")
             return
 
         result = event.get_result()
-        if result is None or not result.chain:
+        if result is None:
+            logger.info("[emoji_filter] result is None, skipping.")
+            return
+        if not result.chain:
+            logger.info("[emoji_filter] result.chain is empty, skipping.")
             return
 
-        new_chain = []
         modified = False
+        new_chain = []
         for comp in result.chain:
             if isinstance(comp, Plain):
                 original = comp.text
                 cleaned = _EMOJI_PATTERN.sub("", original)
                 if cleaned != original:
                     modified = True
-                    logger.debug(f"[emoji_filter] emoji stripped: {original!r} -> {cleaned!r}")
-                    if cleaned:
+                    logger.info(f"[emoji_filter] Emoji stripped: {original!r} -> {cleaned!r}")
+                    if cleaned.strip():
                         new_chain.append(Plain(text=cleaned))
                 else:
                     new_chain.append(comp)
@@ -82,3 +90,4 @@ class EmojiFilter(Star):
 
         if modified:
             result.chain = new_chain
+            logger.info("[emoji_filter] Message chain updated.")
