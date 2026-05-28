@@ -1,6 +1,6 @@
 import re
 from astrbot.api.event import filter, AstrMessageEvent
-from astrbot.api.star import Context, Star, register
+from astrbot.api.star import Context, Star
 from astrbot.api import logger
 from astrbot.core.message.components import Plain
 
@@ -48,11 +48,10 @@ _EMOJI_PATTERN = re.compile(
 )
 
 
-@register("emoji_filter", "Nya-Nya-Hoshino", "Strip emoji characters from bot replies by Unicode code point matching.", "1.0.0")
-class EmojiFilter(Star):
-    def __init__(self, context: Context, config: dict):
+class Main(Star):
+    def __init__(self, context: Context, config: dict = None):
         super().__init__(context)
-        self.config = config
+        self.config = config or {}
         self.emoji_filter_enabled = self.config.get("emoji_filter_enabled", True)
         logger.info(f"[emoji_filter] Plugin loaded. enabled={self.emoji_filter_enabled}")
 
