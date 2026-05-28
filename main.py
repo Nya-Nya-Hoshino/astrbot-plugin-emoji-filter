@@ -55,9 +55,11 @@ class Main(Star):
         self.emoji_filter_enabled = self.config.get("emoji_filter_enabled", True)
         logger.info(f"[emoji_filter] Plugin loaded. enabled={self.emoji_filter_enabled}")
 
-    @filter.on_decorating_result()
+    @filter.on_decorating_result(priority=100)
     async def on_decorating_result(self, event: AstrMessageEvent):
-        logger.info("[emoji_filter] on_decorating_result triggered")
+        """Run BEFORE other on_decorating_result handlers so that downstream
+        plugins (e.g. custome_segment_reply) receive emoji-free text."""
+        logger.info("[emoji_filter] on_decorating_result triggered (priority=100)")
 
         if not self.emoji_filter_enabled:
             logger.info("[emoji_filter] Disabled, skipping.")
