@@ -1,0 +1,33 @@
+name: Feature Request
+description: Suggest a new feature for emoji_filter
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: "## Thanks for the suggestion!"
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: What would you like the plugin to do?
+    validations:
+      required: true
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use Case
+      description: Why is this useful for you?
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - "Per-message filtering (current)"
+        - "Optional whitelist channels"
+        - "Custom emoji allowlist"
+        - "Other (describe below)"
+    validations:
+      required: true

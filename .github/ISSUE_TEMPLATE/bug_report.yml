@@ -1,0 +1,53 @@
+name: Bug Report
+description: Report a problem with the emoji_filter plugin
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "## Thanks for reporting a bug!"
+  - type: input
+    id: astrbot_version
+    attributes:
+      label: AstrBot Version
+      placeholder: "e.g. v4.25.0"
+    validations:
+      required: true
+  - type: input
+    id: plugin_version
+    attributes:
+      label: emoji_filter Plugin Version
+      placeholder: "e.g. v1.0.0"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What happened and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Enable plugin
+        2. Send message with emoji
+        3. Bot still replies with emoji
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs
+      description: Search AstrBot console for [emoji_filter] and paste here
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have updated to the latest version
+        - label: I have searched existing issues
+        - label: I have checked emoji_filter_enabled is 	rue in WebUI
