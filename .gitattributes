@@ -1,0 +1,11 @@
+# Force UTF-8 for all text files
+* text=auto eol=lf
+
+# Explicit UTF-8 for these file types
+*.py text eol=lf
+*.md text eol=lf diff=markdown
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
